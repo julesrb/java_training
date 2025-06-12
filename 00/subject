@@ -1,0 +1,25 @@
+🧠 Assignment: Refactor a Messy E-Commerce Cart System
+📜 Context:
+You’ve just joined a small e-commerce startup as a junior Java developer. Your first task is to clean up and refactor some messy legacy code related to the shopping cart and order processing system.
+
+🛠️ What You're Given:
+You’ll receive a poorly organized CartSystem.java file (see sample below). It’s a big file that mixes multiple responsibilities: user info, cart logic, pricing, tax calculation, and payment logic. All in one place. There’s also duplicate code, hardcoded strings, and inconsistent naming.
+
+✅ Objectives (What You Must Do):
+Refactor the code using clean OOP principles:
+
+Split responsibilities into logical classes (e.g., Cart, Product, User, PaymentProcessor, etc.).
+
+Apply SOLID principles where applicable.
+
+Use encapsulation, composition, and polymorphism if needed.
+
+Rename classes, variables, and methods to improve readability.
+
+Remove code duplication and apply DRY principles.
+
+Make the code testable (no need to write actual tests, but your structure should allow it easily).
+
+Optional: Add basic unit tests for one or two classes.
+
+Optional: Replace the primitive obsession (e.g., strings for price, tax, email) with value objects.
