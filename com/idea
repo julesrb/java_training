@@ -1,0 +1,68 @@
+//model
+
+class User {
+	String	name;
+	String	email;
+	int		id;
+	String	paymentMethod;
+}
+
+class interface Product {
+	String	name;
+	float	price;
+	int 	quantities;
+	String?	category;
+}
+
+class Book implement Product {
+
+}
+
+class Pen implement Product {
+
+}
+
+class Notebook implement Product {
+
+}
+
+class Cart {
+	List<Product> items;
+
+	void add_to_cart(Product poduct);
+	void update_total();
+}
+
+Class order {
+	double total = 0.0;
+	double taxRate = 0.19;
+
+	void add_to_cart(Product product);
+	void update_total();
+}
+
+// service
+
+class PaymentProcessor {
+	singleton;
+	public enum PaymentMethod {
+		CREDIT,
+		PAYPAL,
+		CRYPTO
+	}
+
+	boolean process_payment(double Amout, PaymentMethod paymentMethod )
+}
+
+class EmailService {
+	void sendConfirmationEmail(String email, double total);
+}
+
+class DiscountCalculator {
+	int calculate_discount(float total){}
+}
+
+
+
+start 18.15
+pause 19.15
