@@ -1,0 +1,185 @@
+package org.example;
+import java.util.*;
+
+public class Book extends Product {
+	public Book(int quantities) {
+		super("Book", 12.99, "Stationary", quantities);
+	}
+}
+
+public class Cart {
+	public List<Product> items;
+
+	public Cart() {
+		this.items = new ArrayList<>();
+	}
+
+	void add_to_cart(Product product) {
+		items.add(product);
+		System.out.println("Added to cart: " + product.quantities + " x " + product.name + " (€" + product.price + " each)");
+	}
+}
+
+public class DiscountCalculator {
+	private static final DiscountCalculator singleton = new DiscountCalculator();
+
+	private DiscountCalculator(){}
+
+	public static DiscountCalculator getInstance(){
+			return singleton;
+	}
+	
+	double calculate_discount(double total){
+		if (total > 50) {
+			double discount = total * 0.1;
+			System.out.println("10% discount applied: -€" + discount);
+			return discount;
+		}
+		else
+			return 0.0;
+	}
+}
+
+public class Ecommerce {
+	public static void main(String[] args) {
+
+		User John = new User("john_doe", "john@example.com", 123, "credit");
+
+		Order order = new Order(new Cart());
+		order.setUser(John);
+
+		order.add_to_order(new Book(1));
+		order.add_to_order(new Pen(3));
+		order.add_to_order(new Notebook(2));
+
+		order.checkout();
+		order.pay();
+
+
+	}
+}
+public class EmailService {
+	private static final EmailService singleton = new EmailService();
+
+	private EmailService(){}
+
+	public static EmailService getInstance(){
+			return singleton;
+	}
+
+	void sendConfirmationEmail(String email, double total){
+		System.out.println("Sending confirmation email to " + email + " for €" + total + "...");
+	}
+}
+public class Notebook extends Product {
+	public Notebook(int quantities) {
+		super("Notebook", 5.25, "Stationary", quantities);
+	}
+}
+
+
+public class Order {
+	public double total = 0.0;
+	final double taxRate = 0.19;
+	private double tax = 0.0;
+	private double discount = 0.0;
+	private Cart cart;
+	private User user;
+	private EmailService emailService;
+	private PaymentProcessor paymentProcessor;
+	private DiscountCalculator discountCalculator;
+	private boolean paid = false;
+
+
+	public Order(Cart cart){
+		this.cart = cart;
+		emailService = EmailService.getInstance();
+		paymentProcessor = PaymentProcessor.getInstance();
+		discountCalculator = DiscountCalculator.getInstance();
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void add_to_order(Product product) {
+		cart.add_to_cart(product);
+		update_total(product);
+	}
+
+	public void update_total(Product product){
+		total += product.price * product.quantities;
+		System.out.println("new total: " + total + "€");
+	}
+
+	public void checkout() {
+		discount = discountCalculator.calculate_discount(total);
+		tax = (total - discount) * taxRate;
+		System.out.println("User: " + user.name + " (" + user.email + ")");
+		System.out.println("Subtotal: €" + (total - discount));
+		System.out.println("Tax (19%): €" + tax);
+		System.out.println("Total: €" + (total + tax - discount));
+	}
+
+	public void pay() {
+		if (paymentProcessor.process_payment(total + tax - discount, user.paymentMethod))
+			emailService.sendConfirmationEmail(user.email, total + tax - discount);
+		else
+			System.out.println("Payment failed...");
+	}
+}
+
+public class PaymentProcessor {
+	private static final PaymentProcessor singleton = new PaymentProcessor();
+
+	private PaymentProcessor(){}
+
+	public static PaymentProcessor getInstance(){
+			return singleton;
+	}
+
+	boolean process_payment(double amount, String method) {
+		if (method.equals("credit")) {
+			System.out.println("Processing credit payment for €" + amount + "...");
+			return true;
+		} else if (method.equals("paypal")) {
+			System.out.println("Redirecting to PayPal for €" + amount + "...");
+			return true;
+		} else if (method.equals("crypto")) {
+			System.out.println("Processing crypto payment...");
+			return false; // simulate failure
+		}
+		return false;
+	}
+}
+public class Pen extends Product {
+	public Pen(int quantities) {
+		super("Pen", 1.5, "Stationary", quantities);
+	}
+}
+public abstract class Product {
+	public String	name;
+	public double	price;
+	public String	category;
+	public int		quantities;
+
+	public Product(String name, double price, String category, int quantities) {
+		this.name = name;
+		this.price = price;
+		this.category = category;
+		this.quantities = quantities;
+	}
+}
+public class User {
+	public String	name;
+	public String	email;
+	public int		id;
+	public String	paymentMethod;
+
+	public User(String name, String email, int id, String paymentMethod) {
+		this.name = name;
+		this.email = email;
+		this.id = id;
+		this.paymentMethod = paymentMethod;
+	}
+}

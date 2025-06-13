@@ -1,68 +1,177 @@
+import java.util.*;
+package org.example;
+
 //model
 
-class User {
-	String	name;
-	String	email;
-	int		id;
-	String	paymentMethod;
+ public class User {
+	public String	name;
+	public String	email;
+	public int		id;
+	public String	paymentMethod;
+
+	public void User(String name, String email, int id, String paymentMethod) {
+		this.name = name;
+		this.email = email;
+		this.id = id;
+		this.paymentMethod = paymentMethod;
+	}
 }
 
-class interface Product {
-	String	name;
-	float	price;
-	int 	quantities;
-	String?	category;
+public interface Product {
+	public String	name;
+	public float	price;
+	public String	category;
+	public int		quantities;
+
+	public void Product(String name, float price, String category, int quantities) {
+		this.name = name;
+		this.price = price;
+		this.category = category;
+		this.quantities = quantities;
+	}
 }
 
-class Book implement Product {
-
+public class Book implements Product {
+	public void Book(int quantities) {
+		super.Product("Book", 12.99, "Stationary", quantities);
+	}
 }
 
-class Pen implement Product {
-
+public class Pen implements Product {
+	public void Book(int quantities) {
+		super.Product("Pen", 1.5, "Stationary", quantities);
+	}
 }
 
-class Notebook implement Product {
-
+public class Notebook implements Product {
+	public void Book(int quantities) {
+		super.Product("Notebook", 5.25, "Stationary", quantities);
+	}
 }
 
-class Cart {
-	List<Product> items;
+public class Cart {
+	public List<Product> items;
 
-	void add_to_cart(Product poduct);
-	void update_total();
+	public void Cart(Order order) {
+		this.items = new ArrayList<>();
+	}
+
+	void add_to_cart(Product poduct) {
+		items.add(product)
+		System.out.println("Added to cart: " + product.quantities + " x " + product.name + " (€" + product.price + " each)");
+		order.update_total();
+	}
 }
 
-Class order {
-	double total = 0.0;
-	double taxRate = 0.19;
+public class Order {
+	public double total = 0.0;
+	final double taxRate = 0.19;
+	private double tax = 0.0;
+	private double discount = 0.0;
+	private Cart cart;
+	private User user;
+	private EmailService emailService;
+	private PaymentProcessor paymentProcessor;
+	private DiscountCalculator discountCalculator;
+	private boolean paid = false;
 
-	void add_to_cart(Product product);
-	void update_total();
+
+	public void Order(Cart cart){
+		this cart = cart;
+		emailService = EmailService.getInstance();
+		paymentProcessor = PaymentProcessor.getInstance();
+		discountCalculator = DiscountCalculator.getInstance();
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void add_to_order(Product product) {
+		cart.add_to_cart(product);
+		update_total(product);
+	}
+
+	public void update_total(Product product){
+		total += product.price * product.quantities;
+		System.out.println("new total: " + total + "€");
+	}
+
+	public void checkout() {
+		discount = DiscountCalculator.calculate_discount(total);
+		tax = (total - discount) * taxRate;
+		System.out.println("User: " + user.name + " (" + user.email + ")");
+		System.out.println("Subtotal: €" + (total - discount));
+		System.out.println("Tax (19%): €" + tax);
+		System.out.println("Total: €" + (total + tax - discount));
+	}
 }
 
 // service
 
-class PaymentProcessor {
-	singleton;
-	public enum PaymentMethod {
-		CREDIT,
-		PAYPAL,
-		CRYPTO
+public class PaymentProcessor {
+	private static final PaymentProcessor singleton = new PaymentProcessor;
+
+	private PaymentProcessor(){}
+
+	public static PaymentProcessor getInstance(){
+			return singleton;
 	}
 
 	boolean process_payment(double Amout, PaymentMethod paymentMethod )
 }
 
-class EmailService {
+public class EmailService {
+	private static final EmailService singleton = new EmailService;
+
+	private EmailService(){}
+
+	public static EmailService getInstance(){
+			return singleton;
+	}
+
 	void sendConfirmationEmail(String email, double total);
 }
 
-class DiscountCalculator {
-	int calculate_discount(float total){}
+public class DiscountCalculator {
+	private static final DiscountCalculator singleton = new DiscountCalculator;
+
+	private DiscountCalculator(){}
+
+	public static DiscountCalculator getInstance(){
+			return singleton;
+	}
+	
+	double calculate_discount(double total){
+		if (total > 50) {
+			return total * 0.1;
+			System.out.println("10% discount applied: -€" + discount);
+		}
+		else
+			return 0.0
+	}
+}
+
+public class App {
+	public static void main(String[] args) {
+
+		User John = new User("john_doe", "john@example.com", 123, "credit");
+
+		Order order = new Order(new Cart());
+		order.setUser(John);
+
+		order.add_to_order(new Book(1));
+		order.add_to_order(new Pen(3));
+		order.add_to_order(new Notebook(2));
+
+		order.checkout();
+
+
+
+	}
 }
 
 
-
-start 18.15
-pause 19.15
+// start 18.15
+// pause 19.15
+// start 15.00

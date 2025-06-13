@@ -5,25 +5,25 @@ import java.util.*;
 public class CartSystem {
 
 	public static void main(String[] args) {
-		String username = "john_doe";
-		String email = "john@example.com";
-		int userId = 123;
-		String paymentMethod = "credit";
+		// String username = "john_doe";
+		// String email = "john@example.com";
+		// int userId = 123;
+		// String paymentMethod = "credit";
 
-		List<String> productNames = Arrays.asList("Book", "Pen", "Notebook");
-		List<Double> productPrices = Arrays.asList(12.99, 1.5, 5.25);
-		List<Integer> productQuantities = Arrays.asList(1, 3, 2);
-		List<String> categories = Arrays.asList("Stationery", "Stationery", "Stationery");
+		// List<String> productNames = Arrays.asList("Book", "Pen", "Notebook");
+		// List<Double> productPrices = Arrays.asList(12.99, 1.5, 5.25);
+		// List<Integer> productQuantities = Arrays.asList(1, 3, 2);
+		// List<String> categories = Arrays.asList("Stationery", "Stationery", "Stationery");
 
-		double total = 0.0;
+		// double total = 0.0;
 		double taxRate = 0.19;
 		double discount = 0.0;
 
-		for (int i = 0; i < productNames.size(); i++) {
-			double itemTotal = productPrices.get(i) * productQuantities.get(i);
-			total += itemTotal;
-			System.out.println("Added to cart: " + productQuantities.get(i) + " x " + productNames.get(i) + " (€" + productPrices.get(i) + " each)");
-		}
+		// for (int i = 0; i < productNames.size(); i++) {
+			// double itemTotal = productPrices.get(i) * productQuantities.get(i);
+			// total += itemTotal;
+			// System.out.println("Added to cart: " + productQuantities.get(i) + " x " + productNames.get(i) + " (€" + productPrices.get(i) + " each)");
+		// }
 
 		if (total > 50) {
 			discount = total * 0.1;
@@ -31,13 +31,13 @@ public class CartSystem {
 			System.out.println("10% discount applied: -€" + discount);
 		}
 
-		double tax = total * taxRate;
-		total += tax;
+		// double tax = total * taxRate;
+		// total += tax;
 
-		System.out.println("User: " + username + " (" + email + ")");
-		System.out.println("Subtotal: €" + (total - tax));
-		System.out.println("Tax (19%): €" + tax);
-		System.out.println("Total: €" + total);
+		// System.out.println("User: " + username + " (" + email + ")");
+		// System.out.println("Subtotal: €" + (total - tax));
+		// System.out.println("Tax (19%): €" + tax);
+		// System.out.println("Total: €" + total);
 
 		boolean paid = processPayment(total, paymentMethod);
 		if (paid) {
